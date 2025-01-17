@@ -16,8 +16,9 @@ For this we will use Amplify to deploy and HOST
 4. Use amplify to deploy
 
         use the console, cli, or api
+        if in console follow the prompts and drag and drop
 
-        if in cli follow the prompts and drag and drop
+        otherwise use the DeployIndexHTMLwAmplify.sh script
 
 
 - A WAY TO INVOKE THE MATH FUNCTIONALITY

@@ -6,9 +6,9 @@
 
 # 2. Create a zip file containing your index.html
 
-# 3. Create a new Amplify app with a unique name [2]
+# 3. Create a new Amplify app with a unique name using the first cli argument and a generated timestamp
 
-# 4. Create a main branch
+# 4. Create a main branch on amplify
 
 # 5. Start a deployment
 
@@ -24,13 +24,13 @@
 
 # Configure AWS credentials ( aws configure)
 
-# Make the script executable: chmod +x deploy.sh
+# Make the script executable: chmod +x DeployIndexHTMLwAmplify.sh
 
 # Have your index.html in the same directory as the script
 
 # To run the script:
 
-# ./DeployHTMLwAmplify.sh <app name>
+# ./DeployIndexHTMLwAmplify.sh <app name>
 
 ####################################################
 
@@ -45,6 +45,13 @@
 # Exit on any error
 set -e
 
+# Check if app name parameter was provided
+if [ -z "$1" ]; then
+    echo "terminating process - no app name parameter provided"
+    exit 1
+fi
+
+
 echo "Starting Amplify deployment process..."
 
 # Check if index.html exists
@@ -58,10 +65,8 @@ echo "Creating zip file..."
 zip -r deployment.zip index.html
 
 # Get the current timestamp for unique app name
-TIMESTAMP=$(date +%Y%m%d%H%M%S)
+TIMESTAMP=$(date +%Y.%m.%d.%H.%M.%S)
 NAME=$1
-
-
 APP_NAME="${NAME}-${TIMESTAMP}"
 
 # Create a new Amplify app
@@ -88,6 +93,22 @@ aws amplify start-deployment --app-id "${APP_ID}" --branch-name "main" --job-id 
 echo "Cleaning up..."
 rm deployment.zip
 
+# Get the app URL
 echo "Deployment initiated successfully!"
 echo "App ID: ${APP_ID}"
+echo "App URL: ${FULL_URL}"
+
+# Wait for deployment to complete (you might want to adjust the wait time)
+echo "Waiting for deployment to complete...when complete you will be redirected to the app URL in your default browser"
+sleep 30
+
+# Open the URL in the default browser based on the operating system
+case "$(uname -s)" in
+    Linux*)     xdg-open "$FULL_URL";;
+    Darwin*)    open "$FULL_URL";;
+    CYGWIN*|MINGW32*|MSYS*|MINGW*) start "$FULL_URL";;
+    *)          echo "Please visit: $FULL_URL";;
+esac
+
+
 echo "You can check the status in the AWS Amplify Console"
