@@ -1,18 +1,12 @@
 #!/bin/bash
 
+export AWS_PAGER=""  # Disable the AWS CLI pager so we don't get json output
+
 # Array of bucket names - change them to suit your needs
 BUCKETS=(
-    "amplify-deploy-temp-20250117005928"
-    "amplify-deploy-temp-20250117012931"
-    "amplify-deploy-temp-20250117013357"
-    "amplify-deploy-temp-20250117013944"
-    "amplify-deploy-temp-20250117014619"
-    "amplify-deploy-temp-20250117014738"
-    "amplify-deploy-temp-20250117014950"
-    "amplify-deploy-temp-20250117015423"
-    "amplify-deploy-temp-20250117020100"
-    "amplify-deploy-temp-20250117020212"
-    "amplify-deploy-temp-20250117020553"
+
+    "amplify-deploy-temp-20250117120037"
+    "amplify-deploy-temp-20250117121124"
 )
 
 # Function to delete a bucket and its contents

@@ -31,15 +31,15 @@
 // 1. First install the required dependencies:
 
     // npm init -y
-    // npm install @aws-sdk/client-amplify @aws-sdk/client-s3 open
+    // npm install @aws-sdk/client-amplify @aws-sdk/client-s3 open jszip
 
 // 2. Save the script as DeployIndexHTMLwAmplifyViaS3.js
 
 // 3. Run it with:
 
-    // node DeployIndexHTMLwAmplifyViaS3.js "Your App Name"
+    // node DeployIndexHTMLwAmplifyViaS3.js
 
-    
+
 
 ////////////////////////////////////////////////////////////////
 
@@ -48,7 +48,9 @@ const { AmplifyClient, CreateAppCommand, CreateBranchCommand, CreateDeploymentCo
 const { S3Client, CreateBucketCommand, PutBucketPolicyCommand, PutObjectCommand, DeleteObjectCommand, DeleteBucketCommand } = require("@aws-sdk/client-s3");
 const fs = require('fs');
 const path = require('path');
-const open = require('open'); // You'll need to install this package: npm install open
+const JSZip = require("jszip");
+
+
 
 // Initialize AWS clients
 const amplifyClient = new AmplifyClient({ region: "us-east-1" });
@@ -102,14 +104,65 @@ async function deployToAmplify(appName) {
             Policy: JSON.stringify(bucketPolicy)
         }));
 
+        // // Create zip file and upload to S3
+        // console.log("Creating zip file...");
+        // const zipBuffer = fs.readFileSync('deployment.zip');
+        // await s3Client.send(new PutObjectCommand({
+        //     Bucket: bucketName,
+        //     Key: 'deployment.zip',
+        //     Body: zipBuffer
+        // }));
+
+
+
+
+
+
+
+
+
         // Create zip file and upload to S3
         console.log("Creating zip file...");
-        const zipBuffer = fs.readFileSync('deployment.zip');
-        await s3Client.send(new PutObjectCommand({
-            Bucket: bucketName,
-            Key: 'deployment.zip',
-            Body: zipBuffer
-        }));
+        const zip = new JSZip();
+
+        try {
+            // Read the index.html file
+            const indexContent = await fs.promises.readFile('index.html', 'utf-8');
+
+            // Add index.html to the zip
+            zip.file('index.html', indexContent);
+
+            // Generate the zip file as a buffer
+            const zipBuffer = await zip.generateAsync({
+                type: 'nodebuffer',
+                compression: 'DEFLATE',
+                compressionOptions: {
+                    level: 9 // maximum compression
+                }
+            });
+
+            // Upload the zip buffer to S3
+            await s3Client.send(new PutObjectCommand({
+                Bucket: bucketName,
+                Key: 'deployment.zip',
+                Body: zipBuffer
+            }));
+
+            console.log("Zip file created and uploaded successfully");
+        } catch (error) {
+            console.error("Error creating or uploading zip file:", error);
+            throw error;
+        }
+
+
+
+
+
+
+
+
+
+
 
         // Create Amplify app
         console.log("Creating Amplify app...");
@@ -192,10 +245,29 @@ async function deployToAmplify(appName) {
         const appUrl = `https://main.${defaultDomain}`;
         console.log(`App URL: ${appUrl}`);
 
+
+
+
+
+
+
         // Open in browser
         console.log("Opening app in default browser...");
-        await sleep(5000);
-        await open(appUrl);
+
+        // Dynamic import of open
+        (async () => {
+            try {
+            const { default: open, openApp, apps } = await import('open');
+
+            // Example usage:
+            await open(appUrl); // Opens the URL in the default browser
+
+            } catch (error) {
+            console.error('Error importing open:', error);
+            }
+        })();
+
+
 
         console.log("Your app is now deployed via AWS Amplify!");
         return appId;
@@ -205,6 +277,14 @@ async function deployToAmplify(appName) {
         throw error;
     }
 }
+
+
+
+
+
+
+
+
 
 // Run the deployment
 if (process.argv.length < 3) {

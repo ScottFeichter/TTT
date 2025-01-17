@@ -1,0 +1,18 @@
+{
+  "name": "p1-to-the-math",
+  "version": "1.0.0",
+  "main": "DeployIndexHTMLwAmplifyViaS3.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@aws-sdk/client-amplify": "^3.730.0",
+    "@aws-sdk/client-s3": "^3.730.0",
+    "jszip": "^3.10.1",
+    "open": "^10.1.0"
+  }
+}
