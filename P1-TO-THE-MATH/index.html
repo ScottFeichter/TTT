@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Math Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .calculator {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input[type="number"] {
+            width: 100px;
+            padding: 5px;
+            margin: 5px;
+        }
+        button {
+            padding: 5px 10px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>Simple Math Calculator</h1>
+        <div>
+            <input type="number" id="num1" placeholder="First number">
+            <input type="number" id="num2" placeholder="Second number">
+        </div>
+        <div>
+            <button onclick="calculate('add')">Add (+)</button>
+            <button onclick="calculate('subtract')">Subtract (-)</button>
+            <button onclick="calculate('multiply')">Multiply (×)</button>
+            <button onclick="calculate('divide')">Divide (÷)</button>
+        </div>
+        <div id="result">Result: </div>
+    </div>
+
+    <script>
+        function calculate(operation) {
+            const num1 = parseFloat(document.getElementById('num1').value);
+            const num2 = parseFloat(document.getElementById('num2').value);
+            let result;
+
+            if (isNaN(num1) || isNaN(num2)) {
+                document.getElementById('result').textContent = 'Please enter valid numbers';
+                return;
+            }
+
+            switch(operation) {
+                case 'add':
+                    result = num1 + num2;
+                    break;
+                case 'subtract':
+                    result = num1 - num2;
+                    break;
+                case 'multiply':
+                    result = num1 * num2;
+                    break;
+                case 'divide':
+                    if (num2 === 0) {
+                        document.getElementById('result').textContent = 'Cannot divide by zero';
+                        return;
+                    }
+                    result = num1 / num2;
+                    break;
+            }
+
+            document.getElementById('result').textContent = `Result: ${result}`;
+        }
+    </script>
+</body>
+</html>
