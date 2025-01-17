@@ -36,9 +36,8 @@
 
 # Have your index.html in the same directory as the script
 
-# To run the script:
+# To run the script: ./DeployIndexHTMLwAmplifyviaS3.sh <app name>
 
-# ./DeployIndexHTMLwAmplify.sh <app name>
 
 ####################################################
 
