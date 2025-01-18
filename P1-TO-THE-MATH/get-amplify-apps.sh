@@ -50,6 +50,7 @@
 # HERE IS THE SCRIPT:
 #######################################################
 
+
 # Set the output format to ensure consistent JSON parsing
 export AWS_DEFAULT_OUTPUT="json"
 
@@ -66,21 +67,47 @@ done
 
 echo "----------------------------------------"
 
-# Prompt user for JSON file creation
-read -p "Would you like to create a JSON file with this list? (y/n): " answer
+
+# Prompt user for CSV file creation
+read -p "Would you like to create a spreadsheet file with this list? (y/n): " answer
 
 # Convert answer to lowercase using tr instead
 answer=$(echo "$answer" | tr '[:upper:]' '[:lower:]')
 
 if [ "$answer" = "y" ]; then
-    # Create JSON file with timestamp in the name
+    # Create CSV file with timestamp in the name
     timestamp=$(date +"%Y%m%d_%H%M%S")
-    filename="amplify_apps_${timestamp}.json"
+    filename="amplify_apps_${timestamp}.csv"
 
-    # Get the full JSON output and save to file
-    aws amplify list-apps > "$filename"
+    # Create header in the CSV file
+    echo "APP NAME,QUOTE,APP ID,QUOTE" > "$filename"
 
-    echo "JSON file created: $filename"
+    # Get the apps and format them into the CSV file
+    aws amplify list-apps --query "apps[].[name,appId]" --output text | sort | while IFS=$'\t' read -r name appid; do
+        echo "\"$name\",\"\"\"\",\"$appid\",\"\"\"\"" >> "$filename"
+    done
+
+    echo "Spreadsheet file created: $filename"
+
+    # Open the file with default application based on OS
+    case "$(uname)" in
+        "Darwin") # macOS
+            open "$filename"
+            ;;
+        "Linux")
+            if command -v xdg-open > /dev/null; then
+                xdg-open "$filename"
+            else
+                echo "Could not automatically open the file. Please open $filename manually."
+            fi
+            ;;
+        "MINGW"*|"MSYS"*|"CYGWIN"*) # Windows
+            start "$filename"
+            ;;
+        *)
+            echo "Could not automatically open the file. Please open $filename manually."
+            ;;
+    esac
 else
-    echo "No JSON file created"
+    echo "No spreadsheet file created"
 fi
