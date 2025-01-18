@@ -4,7 +4,7 @@ export AWS_PAGER=""  # Disable the AWS CLI pager so we don't get json output
 
 # Array of Amplify app IDs - change them to suit your needs
 APPS=(
-    "dwi0jc4wmfqy6"
+    "dltsdupypqaal"
     "dx5crlnhqiyvm"
     "dy9c0llvjdd14"
     "d2p25i0o02o8xt"
