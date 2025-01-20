@@ -5,8 +5,8 @@ export AWS_PAGER=""  # Disable the AWS CLI pager so we don't get json output
 # Array of bucket names - change them to suit your needs
 BUCKETS=(
 
-    "amplify-deploy-temp-20250117120037"
-    "amplify-deploy-temp-20250117121124"
+    "teamcharlie"
+    "teamcharlie2"
 )
 
 # Function to delete a bucket and its contents

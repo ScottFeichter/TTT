@@ -1,5 +1,0 @@
-BUCKET NAME,QUOTE,CREATION DATE,QUOTE,REGION,QUOTE,BUCKET URL,QUOTE,BUCKET ARN,QUOTE
-"carteblanche","""","2024-03-18 09:17:21+00:00","""","us-west-1","""","https://carteblanche.s3.us-west-1.amazonaws.com","""","arn:aws:s3:::carteblanche",""""
-"elasticbeanstalk-us-east-1-588627308247","""","2024-12-23 19:17:49+00:00","""","None","""","https://elasticbeanstalk-us-east-1-588627308247.s3.None.amazonaws.com","""","arn:aws:s3:::elasticbeanstalk-us-east-1-588627308247",""""
-"teamcharlie","""","2024-08-05 20:23:57+00:00","""","us-west-1","""","https://teamcharlie.s3.us-west-1.amazonaws.com","""","arn:aws:s3:::teamcharlie",""""
-"teamcharlie2","""","2024-08-08 15:53:33+00:00","""","us-west-1","""","https://teamcharlie2.s3.us-west-1.amazonaws.com","""","arn:aws:s3:::teamcharlie2",""""
